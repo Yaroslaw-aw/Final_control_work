@@ -5,12 +5,11 @@ namespace Animals.Model
     internal abstract class Animal
     {
         private static int id;
-        private int finalId;
 
-        public AnimalType Type { get; set ; }
-        public AnimalType GlobalType { get; set; }
+        public AnimalType Type { get; protected set ; }
+        public AnimalType GlobalType { get; protected set; }
 
-        public int FinalId { get { return finalId; } set { finalId = value; } }
+        public int FinalId { get;  private set; }
         public string Name { get; set; }
         public DateTime BirthDate { get; }
 
@@ -21,13 +20,14 @@ namespace Animals.Model
             id = 0;
         }
 
-        public Animal(string name, DateTime birthDate)
+        public Animal(string name, DateTime birthDate, string[]? commands)
         {
-            commands = new List<string>();
+            this.commands = new List<string>();
             this.Name = name;
             this.BirthDate = birthDate;
             ++id;
             this.FinalId = id;
+            AddCommand(commands);
         }
 
         public override string ToString()

@@ -22,7 +22,7 @@ namespace Animals.View
             this.listsOfAnimals = new string[] { " 1 - All animals", " 2 - Pets", " 3 - Pack animals" };
         }
 
-        
+
 
         /// <summary>
         /// Запуск работы с реестром
@@ -50,9 +50,9 @@ namespace Animals.View
                     "\n 0 - Для выхода из реестра"
                     );
 
-                int mainNumber = InputIntValue("");
+                int mainNumber = InputIntValue();
 
-                if ( mainNumber == 0 )
+                if (mainNumber == 0)
                 {
                     start = false;
                     continue;
@@ -67,8 +67,8 @@ namespace Animals.View
                             while (!isAddAnimal)
                             {
                                 Console.Clear();
-                                Console.WriteLine("Добавить животное -> Выбор типа животного\n" + new string('-', 100) );
-                                Console.WriteLine("Для возврата в предыдущее меню нажмите 0\n" + new string('-', 100) );
+                                Console.WriteLine("Добавить животное -> Выбор типа животного\n" + new string('-', 100));
+                                Console.WriteLine("Для возврата в предыдущее меню нажмите 0\n" + new string('-', 100));
                                 Console.WriteLine("Кого вы хотите добавить?\n");
 
                                 string[]? animals = new string[]
@@ -86,7 +86,7 @@ namespace Animals.View
                                     Console.WriteLine(item);
                                 }
 
-                                int typeNum = InputIntValue("");
+                                int typeNum = InputIntValue();
 
                                 if (typeNum == 0)
                                     break;
@@ -108,64 +108,142 @@ namespace Animals.View
                         }
                     case 2: // Показать список команд животного
                         {
-                            bool commands = false;
+                            bool selected = false;
 
-                            while (!commands)
-                            {                                
+                            while (!selected)
+                            {
                                 string path = $"Показать список команд -> Выберете список с животными\n";
 
                                 var listToShow = NumberOfList(path);
 
-                                if (listToShow.numberOfList == 0)
-                                    break;
+                                if (listToShow.numberOfList == 0) break;
 
-                                int idAnimalToShow = 0;
+                                bool shown = false;
 
-                                bool isSelectAnimalToShow = false;
-
-                                while (!isSelectAnimalToShow)
+                                while (!shown)
                                 {
-                                    Console.Clear();                                    
+                                    Console.Clear();
 
-                                    if (listToShow.listOfAnimals.Count > 0)
+                                    if (listToShow.animals.Count > 0)
                                     {
                                         Console.WriteLine("Показать список команд -> Выберете список с животными -> Список животных\n");
                                         registry.ShowAnimals(listToShow.numberOfList);
+
+                                        int idToShow = InputIntValue("Введите id животного, команды которого надо посмотреть");
+
+                                        if (idToShow == 0)
+                                        {
+                                            shown = true;
+                                            continue;
+                                        }
+
+                                        Console.WriteLine();
+
+                                        if (idToShow < 0)
+                                        {
+                                            Console.WriteLine("Такого id нет в списке. Нажмите клавишу и попробуйте ещё раз");
+                                            Console.ReadKey();
+                                            continue;
+                                        }
+
+                                        foreach (var animal in listToShow.animals)
+                                        {
+                                            if (animal.FinalId == idToShow)
+                                            {
+                                                Console.WriteLine(animal.ShowCommands());
+                                                Console.WriteLine("\nНажмите клавишу для продолжения");
+                                                Console.ReadKey();
+                                                selected = true;
+                                                shown = true;
+                                                break;
+                                            }
+                                        }
+
+                                        if (shown == false)
+                                        {
+                                            Console.WriteLine("Введен неверный id. Нажмите кнопку и повторите ввод.");
+                                            Console.ReadKey();
+                                            continue;
+                                        }
+
                                     }
                                     else
                                     {
                                         Console.WriteLine("\nК сожалению животных пока нет. Нажмите клавишу для продолжения");
                                         Console.ReadKey();
-                                        commands = true;
-                                        isSelectAnimalToShow = true;
+                                        selected = true;
+                                        shown = true;
                                         continue;
                                     }
+                                }
+                            }
 
-                                    idAnimalToShow = InputIntValue("Введите id животного, команды которого надо посмотреть");
-                                    Console.WriteLine();
-                                    if (idAnimalToShow < 0 || idAnimalToShow > listToShow.listOfAnimals.Count)
+                            break;
+                        }
+                    case 3: // обучить животное новой команде
+                        {
+                            bool trained = false;
+
+                            while (!trained)
+                            {
+                                string path = $"Обучить новой команде -> Выбрать список с животными\n";
+
+                                var listToShow = NumberOfList(path);
+
+                                if (listToShow.numberOfList == 0) break;
+
+                                bool shown = false;
+
+                                while (!shown)
+                                {
+
+                                    if (listToShow.animals.Count > 0)
                                     {
-                                        Console.WriteLine("Такого id нет в списке. Нажмите клавишу и попробуйте ещё раз");
-                                        Console.ReadKey();
-                                        continue;
+                                        Console.Clear();
+                                        Console.WriteLine("Обучить новой команде -> Выбрать список с животными -> Выбрать животное для обучения\n");
+                                        registry.ShowAnimals(listToShow.numberOfList);
+
+                                        int idAnimalToTrain = InputIntValue("Введите id животного, которого надо обучить или 0 для возврата");
+
+                                        if (idAnimalToTrain == 0)
+                                        {
+                                            shown = true;
+                                            continue;
+                                        }
+
+                                        if (idAnimalToTrain < 0)
+                                        {
+                                            Console.WriteLine("Неверный ввод id. Нажмите клавишу и повторите ввод.");
+                                            Console.ReadKey();
+                                            continue;
+                                        }
+
+                                        foreach (var animal in listToShow.animals)
+                                        {
+                                            if (animal.FinalId == idAnimalToTrain)
+                                            {
+                                                string[]? commands = InputStrings("Введите команды, которым надо обучить животное");
+                                                animal.AddCommand(commands);
+                                                Console.WriteLine("Животное обучено. Нажмите клавишу для продолжения");
+                                                Console.ReadKey();
+                                                shown = true;
+                                                trained = true;
+                                                break;
+                                            }
+                                        }
+                                        if (trained == false)
+                                        {
+                                            Console.WriteLine("Введен неверный id. Нажмите кнопку и повторите ввод.");
+                                            Console.ReadKey();
+                                            continue;
+                                        }
                                     }
                                     else
                                     {
-                                        isSelectAnimalToShow = true;
-                                    }
-                                }
-
-                                if (idAnimalToShow == 0)
-                                    continue;
-
-                                foreach (var animal in listToShow.listOfAnimals)
-                                {
-                                    if (animal.FinalId == idAnimalToShow)
-                                    {
-                                        Console.WriteLine(animal.ShowCommands());
-                                        Console.WriteLine("\nНажмите клавишу для продолжения");
+                                        Console.WriteLine("К сожалению животных пока нет. Нажмите клавишу для продолжения");
                                         Console.ReadKey();
-                                        commands = true;
+                                        shown = true;
+                                        trained = true;
                                         break;
                                     }
                                 }
@@ -173,68 +251,17 @@ namespace Animals.View
 
                             break;
                         }
-                    case 3: // обучить животное новое команде
-                        {
-                            bool train = false;
-
-                            while (!train)
-                            {
-                                string path = $"Обучить новой команде -> Выбрать список с животными\n";
-
-                                var listToShow = NumberOfList(path);
-
-                                if (listToShow.numberOfList == 0)
-                                    break;                                                          
-
-                                if (listToShow.listOfAnimals.Count > 0)
-                                {
-                                    Console.Clear();
-                                    Console.WriteLine("Обучить новой команде -> Выбрать список с животными -> Выбрать животное для обучения\n");
-                                    registry.ShowAnimals(listToShow.numberOfList);
-
-                                    int idAnimalToTrain = InputIntValue("Введите id животного, которого надо обучить или 0 для возврата");
-                                    if (idAnimalToTrain < 0 || idAnimalToTrain > listToShow.listOfAnimals.Count)
-                                    {
-                                        Console.WriteLine("Неверный ввод id. Нажмине клавишу и повторите ввод.");
-                                        Console.ReadKey();
-                                        continue;
-                                    }
-
-                                    foreach (var animal in listToShow.listOfAnimals)
-                                    {
-                                        if (animal.FinalId == idAnimalToTrain)
-                                        {
-                                            string[]? commands = InputStrings("Введите команды, которым надо обучить животное");
-                                            animal.AddCommand(commands);
-                                            Console.WriteLine("Животное обучено. Нажмите клавишу для продолжения");
-                                            Console.ReadKey();
-                                            train = true;
-                                            break;
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    Console.WriteLine("К сожалению животных пока нет. Нажмите клавишу для продолжения");
-                                    Console.ReadKey();
-                                    break;
-                                }
-                            }
-
-                            break;
-                        }
                     case 4: // Вывести животных по дате рождения
-                        {                            
+                        {
                             string path = $"Вывести животных по дате рождения -> Выберете список с животными\n";
 
                             var listToShow = NumberOfList(path);
 
-                            if (listToShow.numberOfList == 0)
-                                break;                            
+                            if (listToShow.numberOfList == 0) break;
 
-                            if (listToShow.listOfAnimals.Count > 0)
+                            if (listToShow.animals.Count > 0)
                             {
-                                List<Animal> sortedAnimalsByBirhDate = listToShow.listOfAnimals.OrderBy(x => x.BirthDate).ToList();
+                                List<Animal> sortedAnimalsByBirhDate = listToShow.animals.OrderBy(animal => animal.BirthDate).ToList();
 
                                 Console.Clear();
 
@@ -247,10 +274,10 @@ namespace Animals.View
                             }
                             else
                             {
-                                Console.WriteLine("Спислк животных пуст. Нажмите клавишу для продолжения");
+                                Console.WriteLine("Список животных пуст. Нажмите клавишу для продолжения");
                                 Console.ReadKey();
                             }
-                            // Вывести животных по дате рождения
+
                             break;
                         }
                     case 5: // Показать количество животных
@@ -259,21 +286,20 @@ namespace Animals.View
 
                             var listToShow = NumberOfList(path);
 
-                            if (listToShow.numberOfList == 0)
-                                break;                            
+                            if (listToShow.numberOfList == 0) break;
 
-                            if (listToShow.listOfAnimals.Count > 0)
+                            if (listToShow.animals.Count > 0)
                             {
-                                Console.WriteLine($"\nВ списке {listToShow.listOfAnimals.Count} животных");
+                                Console.WriteLine($"\nВ списке {listToShow.animals.Count} животных");
                             }
                             else
                             {
                                 Console.WriteLine("Список пуст. В нём 0 животных");
                             }
-                            
+
                             Console.WriteLine("\nНажмите клавишу для продолжения");
                             Console.ReadKey();
-                            
+
                             break;
                         }
                     case 6: // показать всех животных
@@ -289,7 +315,7 @@ namespace Animals.View
                         }
                     case 7: // показать домашних животных
                         {
-                            Console.Clear();;
+                            Console.Clear(); ;
 
                             registry.ShowAnimals(2);
 
@@ -308,7 +334,7 @@ namespace Animals.View
                             Console.ReadKey();
                         }
 
-                            break;
+                        break;
                 }
             }
         }
@@ -318,19 +344,19 @@ namespace Animals.View
         /// </summary>
         /// <param name="path"></param>
         /// <returns>Номер списка с животными и сам список</returns>
-        private (int numberOfList, List<Animal> listOfAnimals) NumberOfList(string path)
+        private (int numberOfList, List<Animal> animals) NumberOfList(string path)
         {
             Console.Clear();
             Console.WriteLine(path + new string('-', 100));
             Console.WriteLine("Для возврата в предыдущее меню нажмите 0\n" + new string('-', 100));
-            Console.WriteLine("Выберете список с животными\n");
+            Console.WriteLine("Выберете список животных\n");
 
-            foreach (var listOfAnimals in listsOfAnimals)
+            foreach (var listOfAnimals in this.listsOfAnimals)
             {
                 Console.WriteLine(listOfAnimals);
             }
 
-            int number = InputIntValue("");
+            int number = InputIntValue();
 
             if (number < 0 || number > this.listsOfAnimals.Length)
             {
@@ -339,41 +365,33 @@ namespace Animals.View
                 return NumberOfList(path);
             }
 
-            Console.WriteLine();            
+            Console.WriteLine();
 
             List<Animal>? list = ListToShow(number);
-            
+
             return (number, list);
         }
 
-        private List<Animal> ListToShow(int listNum)
+        private List<Animal>? ListToShow(int listNum)
         {
             switch (listNum)
             {
                 case 1:
-                    {
-                        return registry.animals;
-                    }
+                    return registry.animals;
                 case 2:
-                    {
-                        return registry.pets;
-                    }
+                    return registry.pets;
                 case 3:
-                    {
-                        return registry.packAnimals;
-                    }
+                    return registry.packAnimals;
                 default:
-                    {
-                        return null;
-                    }
+                    return null;
+
             }
-        }        
+        }
 
         /// <summary>
         /// Добавляет животное в реестр
         /// </summary>
         /// <param name="type"></param>
-        /// <param name="numOfType"></param>
         private void AddAnimalToRegistry(AnimalType type)
         {
             string animalType = string.Empty;
@@ -434,7 +452,7 @@ namespace Animals.View
         {
             string[] birth = InputStrings("Введите дату рождения (YYYY MM DD)");
 
-            int[] date = new int[3]; 
+            int[] date = new int[3];
 
             int i = 0;
 
@@ -480,7 +498,7 @@ namespace Animals.View
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        private int InputIntValue(string message, int? number = null)
+        private int InputIntValue(string? message = null, int? number = null)
         {
             Console.WriteLine(message);
 

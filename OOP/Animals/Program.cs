@@ -1,4 +1,5 @@
-﻿using Animals.Model;
+﻿using Animals.AnimalTypesEnum;
+using Animals.Model;
 using Animals.Presenter;
 using Animals.View;
 
@@ -48,7 +49,7 @@ namespace Animals
             registry.AddAnimal(camel3);
 
             ViewAnimals view = new ViewAnimals(registry);
-            view.Start();            
+            view.Start();              
 
         }
     }

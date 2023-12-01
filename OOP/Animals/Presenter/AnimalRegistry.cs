@@ -112,48 +112,42 @@ namespace Animals.Presenter
             {
                 case 1:
                     {
-                        if (animals.Count > 0)
-                        {
-                            Console.WriteLine("Все животные\n");
-                            foreach (var animal in animals)
-                            {
-                                Console.WriteLine(animal);
-                            }
-                            Console.WriteLine();
-                        }
+                        Console.WriteLine("Все животные\n");
+
+                        Show(animals);
 
                         break;
                     }
                 case 2:
                     {
-                        if (pets.Count > 0)
-                        {                        
-                            Console.WriteLine("Домашние животные\n");
-                            foreach (var pet in pets)
-                            {
-                                Console.WriteLine(pet);
-                            }
-                            Console.WriteLine();
-                        }
+                        Console.WriteLine("Домашние животные\n");
+
+                        Show(pets);
 
                         break;
                     }
                 case 3:
                     {
-                        if (pets.Count > 0)
-                        {
-                            Console.WriteLine("Вьючные животные\n");
-                            foreach (var packAnimal in packAnimals)
-                            {
-                                Console.WriteLine(packAnimal);
-                            }
-                            Console.WriteLine();
-                        }
+                        Console.WriteLine("Вьючные животные\n");
+
+                        Show(packAnimals);
 
                         break;
                     }
             }            
         }  
+
+        private void Show(List<Animal> animals)
+        {
+            if (animals.Count > 0)
+            {
+                foreach (var animal in animals)
+                {
+                    Console.WriteLine(animal);
+                }
+                Console.WriteLine();
+            }
+        }
         
     }
 }
