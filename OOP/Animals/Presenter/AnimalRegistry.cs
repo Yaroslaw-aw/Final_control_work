@@ -1,6 +1,5 @@
 ﻿using Animals.AnimalTypesEnum;
 using Animals.Model;
-using System.Diagnostics;
 
 namespace Animals.Presenter
 {
@@ -53,7 +52,7 @@ namespace Animals.Presenter
         /// <param name="name"></param>
         /// <param name="birthDate"></param>
         /// <param name="commands"></param>
-        public void CreateNewAnimal(AnimalType type, string name, DateTime birthDate, string[]? commands = null)
+        public void CreateNewAnimal(AnimalType type, string name, DateTime birthDate, params string[]? commands)
         {
             switch (type)
             {
