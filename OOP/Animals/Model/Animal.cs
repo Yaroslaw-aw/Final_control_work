@@ -46,10 +46,13 @@ namespace Animals.Model
         /// </summary>
         /// <param name="commands"></param>
         public void AddCommand(params string[]? commands)
-        {
+        {            
             foreach (var command in commands)
-            {
-                if (command != null && command != " " && command != string.Empty) this.commands.Add(command.ToString());
+            {                
+                if (command != null && command != " " && command != string.Empty)
+                    this.commands.Add(command
+                    .Trim(' ', '-', ',', ';', '/', '\\', '"', '\'', '`', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '=', '+', '|', '.', '<', '>')
+                    .ToString());
             }            
         }
 

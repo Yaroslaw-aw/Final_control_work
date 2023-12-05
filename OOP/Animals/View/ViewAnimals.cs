@@ -1,6 +1,8 @@
 ﻿using Animals.AnimalTypesEnum;
 using Animals.Model;
 using Animals.Presenter;
+using System.IO;
+using System.Text;
 
 namespace Animals.View
 {
@@ -55,6 +57,13 @@ namespace Animals.View
                 if (mainNumber == 0)
                 {
                     start = false;
+                    continue;
+                }
+
+                if (mainNumber < 0 || mainNumber > 8)
+                {
+                    Console.WriteLine("Такого пункта нет в меню. Нажмите клавишу и повторите ввод");
+                    Console.ReadKey();
                     continue;
                 }
 
@@ -126,7 +135,10 @@ namespace Animals.View
 
                                     if (listToShow.animals.Count > 0)
                                     {
-                                        Console.WriteLine("Показать список команд -> Выберете список с животными -> Список животных\n");
+                                        Console.WriteLine("Показать список команд -> Выберете список с животными -> Список животных");
+                                        Console.WriteLine(new string('-', 100));
+                                        Console.WriteLine("Введите 0 для возврата в предыдущее меню");
+                                        Console.WriteLine(new string('-', 100));
                                         registry.ShowAnimals(listToShow.numberOfList);
 
                                         int idToShow = InputIntValue("Введите id животного, команды которого надо посмотреть");
@@ -200,7 +212,10 @@ namespace Animals.View
                                     if (listToShow.animals.Count > 0)
                                     {
                                         Console.Clear();
-                                        Console.WriteLine("Обучить новой команде -> Выбрать список с животными -> Выбрать животное для обучения\n");
+                                        Console.WriteLine("Обучить новой команде -> Выбрать список с животными -> Выбрать животное для обучения");
+                                        Console.WriteLine(new string('-', 100));
+                                        Console.WriteLine("Введите 0 для возврата в предыдущее меню");
+                                        Console.WriteLine(new string('-', 100));
                                         registry.ShowAnimals(listToShow.numberOfList);
 
                                         int idAnimalToTrain = InputIntValue("Введите id животного, которого надо обучить или 0 для возврата");
@@ -454,42 +469,90 @@ namespace Animals.View
 
             int[] date = new int[3];
 
-            int i = 0;
-
-            foreach (string str in birth)
+            for (int i = 0; i < birth.Length; i++)
             {
                 date[i] = 0;
-                bool correctInput = int.TryParse(str, out date[i]);
+                bool correctInput = int.TryParse(birth[i], out date[i]);
                 if (!correctInput) break;
-                ++i;
             }
 
             try
             {
-                DateTime time = new DateTime(date[0], date[1], date[2]);
+                DateTime birthDate = new DateTime(date[0], date[1], date[2]);
 
-                return time;
+                return birthDate;
             }
             catch (InvalidDataException e)
             {
                 Console.WriteLine("Некорректная дата, нажмите любую клавишу и повторите ввод ещё раз");
                 Console.ReadKey();
+
+                e.Data.Add(e.Message, DateTime.Now);                
+
+                try
+                {
+                    string log = $"{e.GetObjectData}\n";
+                    using (FileStream fstream = new FileStream(@".\logs.txt", FileMode.Append))
+                    {
+                        byte[] buffer = Encoding.UTF8.GetBytes(log);
+                        fstream.Write(buffer, 0, buffer.Length);
+                    }
+                }
+                catch { }
+
                 return BirthDate();
+
                 throw new InvalidDataException(e.Message);
+                
             }
             catch (ArgumentOutOfRangeException e)
             {
                 Console.WriteLine("Некорректная дата, нажмите любую клавишу и повторите ввод ещё раз");
                 Console.ReadKey();
+
+                e.Data.Add(e.Message, DateTime.Now);
+
+                try
+                {
+                    string log = $"{e.Message}\n";
+                    using (FileStream fstream = new FileStream(@".\logs.txt", FileMode.Append))
+                    {
+                        byte[] buffer = Encoding.UTF8.GetBytes(log);
+                        fstream.Write(buffer, 0, buffer.Length);
+                    }
+                }
+                catch { }
+
                 return BirthDate();
-                throw new ArgumentOutOfRangeException(e.Message);
+
+                throw new Exception(e.Message);
+                
             }
             catch (Exception e)
             {
                 Console.WriteLine("Некорректная дата, нажмите любую клавишу и повторите ввод ещё раз");
                 Console.ReadKey();
+
+                e.Data.Add(e.Message, DateTime.Now);
+
+                try
+                {
+                    string log = $"{e.Data}";
+                    using (FileStream fstream = new FileStream(@".\logs.txt", FileMode.Append))
+                    {
+                        byte[] buffer = Encoding.UTF8.GetBytes(log);
+                        fstream.Write(buffer, 0, buffer.Length);
+                    }
+                }
+                catch { }
+
                 return BirthDate();
-                throw new Exception(e.Message);
+
+                throw new ArgumentOutOfRangeException(e.Message);
+            }
+            finally
+            {
+                
             }
         }
 
@@ -532,7 +595,7 @@ namespace Animals.View
         {
             Console.WriteLine(message);
 
-            return Console.ReadLine()
+            return Console.ReadLine().Trim(',')
                 .Split(' ', '-', ',', ';', '/', '\\', '"', '\'', '`', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '=', '+', '|', '.', '<', '>')
                 .ToArray();
         }

@@ -10,7 +10,7 @@ namespace Animals
         static void Main(string[] args)
         {
             // Pets
-            Animal dog1 = new Dog("Fido", new DateTime(2020, 01, 01), new string[] { "Sit", "Stay", "Fetch" } );
+            Animal dog1 = new Dog("Fido", new DateTime(2020, 01, 01), new string[] { "Sit,.#", "Stay;", "Fetch" } );
             Animal cat1 = new Cat("Whiskers", new DateTime(2019, 05, 15), new string[] { "Sit", "Pounce" } );
             Animal hamster1 = new Hamster("Hammy", new DateTime(2021, 03, 10), new string[] { "Roll", "Hide" } );
             Animal dog2 = new Dog("Buddy", new DateTime(2018, 12, 10), new string[] { "Sit", "Paw", "Bark" } );
@@ -49,7 +49,7 @@ namespace Animals
             registry.AddAnimal(camel3);
 
             ViewAnimals view = new ViewAnimals(registry);
-            view.Start();              
+            view.Start();
 
         }
     }
