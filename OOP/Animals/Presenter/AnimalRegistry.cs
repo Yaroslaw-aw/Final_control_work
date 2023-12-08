@@ -1,5 +1,6 @@
 ﻿using Animals.AnimalTypesEnum;
 using Animals.Model;
+using static Animals.Program;
 
 namespace Animals.Presenter
 {
@@ -43,6 +44,8 @@ namespace Animals.Presenter
                 packAnimals.Add(newAnimal);
                 numOfPacks++;
             }
+
+            //count.Count++;
         }
 
         /// <summary>

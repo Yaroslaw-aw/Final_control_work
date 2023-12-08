@@ -1,5 +1,4 @@
-﻿using Animals.AnimalTypesEnum;
-using Animals.Model;
+﻿using Animals.Model;
 using Animals.Presenter;
 using Animals.View;
 
@@ -7,6 +6,7 @@ namespace Animals
 {
     internal class Program
     {
+        public delegate void MyDelegate();
         static void Main(string[] args)
         {
             // Pets
@@ -30,6 +30,7 @@ namespace Animals
             Animal camel3 = new Camel("Sahara", new DateTime(2015, 08, 14), new string[] { "Walk", "Run" } );
 
             AnimalRegistry registry = new AnimalRegistry();
+
             registry.AddAnimal(dog1);
             registry.AddAnimal(cat1);
             registry.AddAnimal(hamster1);

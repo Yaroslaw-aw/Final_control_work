@@ -1,7 +1,6 @@
 ﻿using Animals.AnimalTypesEnum;
 using Animals.Model;
 using Animals.Presenter;
-using System.IO;
 using System.Text;
 
 namespace Animals.View
@@ -139,7 +138,9 @@ namespace Animals.View
                                         Console.WriteLine(new string('-', 100));
                                         Console.WriteLine("Введите 0 для возврата в предыдущее меню");
                                         Console.WriteLine(new string('-', 100));
-                                        registry.ShowAnimals(listToShow.numberOfList);
+
+                                        ShowTable(listToShow.animals);
+                                        //registry.ShowAnimals(listToShow.numberOfList);
 
                                         int idToShow = InputIntValue("Введите id животного, команды которого надо посмотреть");
 
@@ -216,7 +217,9 @@ namespace Animals.View
                                         Console.WriteLine(new string('-', 100));
                                         Console.WriteLine("Введите 0 для возврата в предыдущее меню");
                                         Console.WriteLine(new string('-', 100));
-                                        registry.ShowAnimals(listToShow.numberOfList);
+
+                                        ShowTable(listToShow.animals);
+                                        // registry.ShowAnimals(listToShow.numberOfList);
 
                                         int idAnimalToTrain = InputIntValue("Введите id животного, которого надо обучить или 0 для возврата");
 
@@ -280,10 +283,12 @@ namespace Animals.View
 
                                 Console.Clear();
 
-                                foreach (var animal in sortedAnimalsByBirhDate)
-                                {
-                                    Console.WriteLine(animal);
-                                }
+                                ShowTable(sortedAnimalsByBirhDate);
+
+                                //foreach (var animal in sortedAnimalsByBirhDate)
+                                //{
+                                //    Console.WriteLine(animal);
+                                //}
                                 Console.WriteLine("\nНажмите клавишу для продолжения");
                                 Console.ReadKey();
                             }
@@ -321,7 +326,9 @@ namespace Animals.View
                         {
                             Console.Clear();
 
-                            registry.ShowAnimals(1);
+                            ShowTable(registry.animals);
+
+                            // registry.ShowAnimals(1);
 
                             Console.WriteLine("Нажмите клавишу, чтобы продолжить");
                             Console.ReadKey();
@@ -332,7 +339,9 @@ namespace Animals.View
                         {
                             Console.Clear(); ;
 
-                            registry.ShowAnimals(2);
+                            ShowTable(registry.pets);
+
+                            // registry.ShowAnimals(2);
 
                             Console.WriteLine("Нажмите клавишу, чтобы продолжить");
                             Console.ReadKey();
@@ -343,7 +352,9 @@ namespace Animals.View
                         {
                             Console.Clear();
 
-                            registry.ShowAnimals(3);
+                            ShowTable(registry.packAnimals);
+
+                            // registry.ShowAnimals(3);
 
                             Console.WriteLine("Нажмите клавишу, чтобы продолжить");
                             Console.ReadKey();
@@ -595,9 +606,24 @@ namespace Animals.View
         {
             Console.WriteLine(message);
 
-            return Console.ReadLine().Trim(',')
-                .Split(' ', '-', ',', ';', '/', '\\', '"', '\'', '`', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '=', '+', '|', '.', '<', '>')
+            return Console.ReadLine()
+                .Split(' ', '-', ',', ';', '/', '\\', '"', '\'', '`', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '=', '+', '|', '.', '<', '>', '?')
                 .ToArray();
+        }
+
+        public void ShowTable(List<Animal> animals)
+        {
+            Console.WriteLine('+' + new string('-', 4) + '+' + new string('-', 10) + '+' + new string('-', 9) + '+' + new string('-', 15) + '+' + new string('-', 26) + '+' + new string('-', 16) + '+');
+            Console.WriteLine($"|{"id", 3} | {"Имя", 8} | {"Тип", 7} | {"Дата рождения", 13} | {"Команды", 24} | {"Глобальны  тип"} |");
+            
+            Console.WriteLine('+' + new string('-', 4) + '+' + new string('-', 10) + '+' + new string('-', 9) + '+' + new string('-', 15) + '+' + new string('-', 26) + '+' + new string('-', 16) + '+');
+
+            foreach (var animal in animals)
+            {
+                Console.WriteLine($"|{animal.FinalId, 3} | {animal.Name, 8} | {animal.Type, 7} | {animal.BirthDate.ToString("dd.MM.yyyy"), 13} | {animal.ShowCommands(), 24} | {animal.GlobalType, 14} |");
+            }
+            Console.WriteLine(new string('-', 87));
+            Console.WriteLine();
         }
     }
 }
