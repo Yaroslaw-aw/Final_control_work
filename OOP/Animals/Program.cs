@@ -6,7 +6,6 @@ namespace Animals
 {
     internal class Program
     {
-        public delegate void MyDelegate();
         static void Main(string[] args)
         {
             // Pets
@@ -47,11 +46,11 @@ namespace Animals
             registry.AddAnimal(camel2);
             registry.AddAnimal(donkey2);
             registry.AddAnimal(horse3);
-            registry.AddAnimal(camel3);
+            registry.AddAnimal(camel3);            
 
             ViewAnimals view = new ViewAnimals(registry);
             view.Start();
-
+            
         }
     }
 }

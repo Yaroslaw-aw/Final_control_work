@@ -2,6 +2,7 @@
 using Animals.Model;
 using Animals.Presenter;
 using System.Text;
+using static Animals.Program;
 
 namespace Animals.View
 {
@@ -37,9 +38,9 @@ namespace Animals.View
                 Console.Clear();
                 Console.WriteLine(
                    $"Реестр животных\n" +
-                    new string('-', 100) + "\n" +
+                    new string('-', Console.WindowWidth) + "\n" +
                     "Выберите пункт меню\n" +
-                    new string('-', 100) + "\n" +
+                    new string('-', Console.WindowWidth) + "\n" +
                     " 1 - Добавить новое животное\n" +
                     " 2 - Показать список команд животного\n" +
                     " 3 - Обучить животное новой команде\n" +
@@ -75,8 +76,8 @@ namespace Animals.View
                             while (!isAddAnimal)
                             {
                                 Console.Clear();
-                                Console.WriteLine("Добавить животное -> Выбор типа животного\n" + new string('-', 100));
-                                Console.WriteLine("Для возврата в предыдущее меню нажмите 0\n" + new string('-', 100));
+                                Console.WriteLine("Добавить животное -> Выбор типа животного\n" + new string('-', Console.WindowWidth));
+                                Console.WriteLine("Для возврата в предыдущее меню нажмите 0\n" + new string('-', Console.WindowWidth));
                                 Console.WriteLine("Кого вы хотите добавить?\n");
 
                                 string[]? animals = new string[]
@@ -135,9 +136,9 @@ namespace Animals.View
                                     if (listToShow.animals.Count > 0)
                                     {
                                         Console.WriteLine("Показать список команд -> Выберете список с животными -> Список животных");
-                                        Console.WriteLine(new string('-', 100));
+                                        Console.WriteLine(new string('-', Console.WindowWidth));
                                         Console.WriteLine("Введите 0 для возврата в предыдущее меню");
-                                        Console.WriteLine(new string('-', 100));
+                                        Console.WriteLine(new string('-', Console.WindowWidth));
 
                                         ShowTable(listToShow.animals);
                                         //registry.ShowAnimals(listToShow.numberOfList);
@@ -214,9 +215,9 @@ namespace Animals.View
                                     {
                                         Console.Clear();
                                         Console.WriteLine("Обучить новой команде -> Выбрать список с животными -> Выбрать животное для обучения");
-                                        Console.WriteLine(new string('-', 100));
+                                        Console.WriteLine(new string('-', Console.WindowWidth));
                                         Console.WriteLine("Введите 0 для возврата в предыдущее меню");
-                                        Console.WriteLine(new string('-', 100));
+                                        Console.WriteLine(new string('-', Console.WindowWidth));
 
                                         ShowTable(listToShow.animals);
                                         // registry.ShowAnimals(listToShow.numberOfList);
@@ -373,8 +374,8 @@ namespace Animals.View
         private (int numberOfList, List<Animal> animals) NumberOfList(string path)
         {
             Console.Clear();
-            Console.WriteLine(path + new string('-', 100));
-            Console.WriteLine("Для возврата в предыдущее меню нажмите 0\n" + new string('-', 100));
+            Console.WriteLine(path + new string('-', Console.WindowWidth));
+            Console.WriteLine("Для возврата в предыдущее меню нажмите 0\n" + new string('-', Console.WindowWidth));
             Console.WriteLine("Выберете список животных\n");
 
             foreach (var listOfAnimals in this.listsOfAnimals)
@@ -580,7 +581,7 @@ namespace Animals.View
 
             if (!isCorrectInput)
             {
-                return InputIntValue("Некорректный ввод. Попробуйте ещё раз");
+                return -1; 
             }
             else return value;
         }
@@ -611,6 +612,10 @@ namespace Animals.View
                 .ToArray();
         }
 
+        /// <summary>
+        /// Выводит список в табличном виде
+        /// </summary>
+        /// <param name="animals"></param>
         public void ShowTable(List<Animal> animals)
         {
             Console.WriteLine('+' + new string('-', 4) + '+' + new string('-', 10) + '+' + new string('-', 9) + '+' + new string('-', 15) + '+' + new string('-', 26) + '+' + new string('-', 16) + '+');
