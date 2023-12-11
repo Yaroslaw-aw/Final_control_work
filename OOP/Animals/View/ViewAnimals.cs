@@ -110,7 +110,7 @@ namespace Animals.View
                                 AnimalType type = (AnimalType)(typeNum - 1);
 
                                 AddAnimalToRegistry(type);
-                                isAddAnimal = true;
+                                //isAddAnimal = true;
                             }
 
                             break;
@@ -153,7 +153,7 @@ namespace Animals.View
 
                                         Console.WriteLine();
 
-                                        if (idToShow < 0)
+                                        if (idToShow < 0 )
                                         {
                                             Console.WriteLine("Такого id нет в списке. Нажмите клавишу и попробуйте ещё раз");
                                             Console.ReadKey();
@@ -167,18 +167,18 @@ namespace Animals.View
                                                 Console.WriteLine(animal.ShowCommands());
                                                 Console.WriteLine("\nНажмите клавишу для продолжения");
                                                 Console.ReadKey();
-                                                selected = true;
-                                                shown = true;
+                                                //selected = true;
+                                                //shown = true;
                                                 break;
                                             }
                                         }
 
-                                        if (shown == false)
-                                        {
-                                            Console.WriteLine("Введен неверный id. Нажмите кнопку и повторите ввод.");
-                                            Console.ReadKey();
-                                            continue;
-                                        }
+                                        //if (shown == false)
+                                        //{
+                                        //    Console.WriteLine("Введен неверный id. Нажмите кнопку и повторите ввод.");
+                                        //    Console.ReadKey();
+                                        //    continue;
+                                        //}
 
                                     }
                                     else
@@ -245,17 +245,17 @@ namespace Animals.View
                                                 animal.AddCommand(commands);
                                                 Console.WriteLine("Животное обучено. Нажмите клавишу для продолжения");
                                                 Console.ReadKey();
-                                                shown = true;
-                                                trained = true;
+                                                //shown = true;
+                                                //trained = true;
                                                 break;
                                             }
                                         }
-                                        if (trained == false)
-                                        {
-                                            Console.WriteLine("Введен неверный id. Нажмите кнопку и повторите ввод.");
-                                            Console.ReadKey();
-                                            continue;
-                                        }
+                                        //if (trained == false)
+                                        //{
+                                        //    Console.WriteLine("Введен неверный id. Нажмите кнопку и повторите ввод.");
+                                        //    Console.ReadKey();
+                                        //    continue;
+                                        //}
                                     }
                                     else
                                     {
