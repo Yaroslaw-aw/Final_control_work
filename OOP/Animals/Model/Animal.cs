@@ -11,7 +11,7 @@ namespace Animals.Model
 
         public int FinalId { get;  private set; }
         public string Name { get; set; }
-        public DateTime BirthDate { get; }
+        public readonly DateTime BirthDate; 
 
         protected List<string> commands;
 
