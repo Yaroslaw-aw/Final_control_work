@@ -49,7 +49,7 @@ namespace Animals.Model
         {            
             foreach (var command in commands)
             {                
-                if (command != null && command != " " && command != string.Empty)
+                if ( !string.IsNullOrEmpty(command) )
                     this.commands.Add(command
                     .Trim(' ', '-', ',', ';', '/', '\\', '"', '\'', '`', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '=', '+', '|', '.', '<', '>')
                     .ToString());
